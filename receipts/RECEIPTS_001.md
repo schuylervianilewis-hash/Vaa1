@@ -28,3 +28,12 @@
 - How it was verified: Code review and structural check.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: Proceeding to Phase 3.
+
+### Receipt Entry
+- Timestamp: 2026-08-01T17:07:00+05:30
+- One-line summary of what was requested: Add APK artifact upload step to GitHub Actions build workflow.
+- Exact files touched: .github/workflows/build.yml
+- What was actually done: Added `actions/upload-artifact@v4` step targeting `app/build/outputs/apk/debug/app-debug.apk` so the built debug APK is attached as a downloadable artifact on completion.
+- How it was verified: Code review.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: Ensure GitHub Actions workflows are enabled on the forked repository.
