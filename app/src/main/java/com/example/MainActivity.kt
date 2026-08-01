@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.logging.LogKeeper
+import com.example.ui.screens.LogViewerScreen
+import com.example.ui.screens.SettingsScreen
 import com.example.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.launch
 
@@ -28,6 +31,16 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
+
+    // Global default uncaught exception logger
+    val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
+    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+      LogKeeper.log(applicationContext, "CRASH", "Uncaught exception in thread ${thread.name}", throwable)
+      defaultHandler?.uncaughtException(thread, throwable)
+    }
+
+    LogKeeper.log(applicationContext, "APP_START", "Vaa Application onCreate initialized")
+
     setContent {
       MyApplicationTheme {
         AppNavigation()
@@ -51,13 +64,28 @@ fun AppNavigation() {
     composable("welcome") {
       WelcomeScreen(onGetStarted = {
         prefs.edit().putBoolean("first_launch_complete", true).apply()
+        LogKeeper.log(context, "WELCOME", "First launch completed")
         navController.navigate("main") {
           popUpTo("welcome") { inclusive = true }
         }
       })
     }
     composable("main") {
-      MainShell()
+      MainShell(
+        onOpenSettings = { navController.navigate("settings") },
+        onOpenLogs = { navController.navigate("logs") }
+      )
+    }
+    composable("settings") {
+      SettingsScreen(
+        onBack = { navController.popBackStack() },
+        onOpenLogs = { navController.navigate("logs") }
+      )
+    }
+    composable("logs") {
+      LogViewerScreen(
+        onBack = { navController.popBackStack() }
+      )
     }
   }
 }
@@ -92,16 +120,73 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainShell() {
+fun MainShell(
+  onOpenSettings: () -> Unit,
+  onOpenLogs: () -> Unit
+) {
+  val context = LocalContext.current
+  val prefs = remember { context.getSharedPreferences("vaa_prefs", Context.MODE_PRIVATE) }
+  var showLogFab by remember { mutableStateOf(prefs.getBoolean("log_keeper_fab_enabled", true)) }
+
+  DisposableEffect(Unit) {
+    val listener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { p, key ->
+      if (key == "log_keeper_fab_enabled") {
+        showLogFab = p.getBoolean("log_keeper_fab_enabled", true)
+      }
+    }
+    prefs.registerOnSharedPreferenceChangeListener(listener)
+    onDispose {
+      prefs.unregisterOnSharedPreferenceChangeListener(listener)
+    }
+  }
+
   val pagerState = rememberPagerState(pageCount = { 4 })
   val coroutineScope = rememberCoroutineScope()
-  
+  var showMenu by remember { mutableStateOf(false) }
+
   val tabs = listOf("Chats", "Updates", "Loader", "Tools")
   val icons = listOf(Icons.Default.Chat, Icons.Default.RssFeed, Icons.Default.CloudDownload, Icons.Default.Build)
   
   Scaffold(
     modifier = Modifier.fillMaxSize(),
+    topBar = {
+      TopAppBar(
+        title = { Text("Vaa") },
+        actions = {
+          IconButton(onClick = { showMenu = true }) {
+            Icon(Icons.Default.MoreVert, contentDescription = "Menu Options")
+          }
+          DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+          ) {
+            DropdownMenuItem(
+              text = { Text("Settings") },
+              onClick = {
+                showMenu = false
+                onOpenSettings()
+              }
+            )
+            DropdownMenuItem(
+              text = { Text("Add New") },
+              onClick = {
+                showMenu = false
+                LogKeeper.log(context, "UI_ACTION", "Add New tapped")
+              }
+            )
+            DropdownMenuItem(
+              text = { Text("All Threads") },
+              onClick = {
+                showMenu = false
+                LogKeeper.log(context, "UI_ACTION", "All Threads tapped")
+              }
+            )
+          }
+        }
+      )
+    },
     bottomBar = {
       Column(modifier = Modifier.fillMaxWidth()) {
         NavigationBar {
@@ -158,12 +243,14 @@ fun MainShell() {
           .fillMaxSize()
           .padding(16.dp)
       ) {
-        // Log Keeper shortcut - left, alone
-        FloatingActionButton(
-          onClick = { /* TODO */ },
-          modifier = Modifier.align(Alignment.BottomStart)
-        ) {
-          Icon(Icons.Default.List, contentDescription = "Log Keeper")
+        // Log Keeper shortcut - left, alone (conditionally visible)
+        if (showLogFab) {
+          FloatingActionButton(
+            onClick = { onOpenLogs() },
+            modifier = Modifier.align(Alignment.BottomStart)
+          ) {
+            Icon(Icons.Default.List, contentDescription = "Log Keeper")
+          }
         }
         
         // Stacked right FABs
@@ -173,11 +260,11 @@ fun MainShell() {
           horizontalAlignment = Alignment.End
         ) {
           // Omega shortcut - top
-          FloatingActionButton(onClick = { /* TODO */ }) {
+          FloatingActionButton(onClick = { LogKeeper.log(context, "UI_ACTION", "Omega FAB tapped") }) {
             Icon(Icons.Default.Face, contentDescription = "Omega")
           }
           // Contextual action - below Omega
-          FloatingActionButton(onClick = { /* TODO */ }) {
+          FloatingActionButton(onClick = { LogKeeper.log(context, "UI_ACTION", "Contextual FAB tapped") }) {
             Icon(Icons.Default.Add, contentDescription = "Action")
           }
         }
