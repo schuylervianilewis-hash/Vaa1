@@ -188,8 +188,14 @@ fun MainShell(
       )
     },
     bottomBar = {
-      Column(modifier = Modifier.fillMaxWidth()) {
-        NavigationBar {
+      Column(
+        modifier = Modifier
+          .fillMaxWidth()
+          .navigationBarsPadding()
+      ) {
+        NavigationBar(
+          windowInsets = WindowInsets(0, 0, 0, 0)
+        ) {
           tabs.forEachIndexed { index, title ->
             NavigationBarItem(
               selected = pagerState.currentPage == index,
@@ -203,12 +209,12 @@ fun MainShell(
             )
           }
         }
-        // True bottom-most tab strip for open threads
+        // True bottom-most tab strip for open threads (positioned cleanly above Android system nav bar)
         Row(
           modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(12.dp),
+            .padding(horizontal = 12.dp, vertical = 8.dp),
           verticalAlignment = Alignment.CenterVertically
         ) {
           Icon(Icons.Default.AccountCircle, contentDescription = "Thread 1")
