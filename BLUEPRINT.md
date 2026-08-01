@@ -128,8 +128,8 @@ Ordinary chat content is fine to log if relevant to diagnosing a scraping failur
 
 ```
 ┌─────────────────────────────────┐
-│  Vaa                        [⋮]  │  ← top app bar — 3-dot menu:
-├─────────────────────────────────┤     Settings / Add New / All Threads
+│  Vaa                            │  ← top app bar: title only
+├─────────────────────────────────┤
 │ (All)(Chat)(Page)(Local)         │  ← pill filter row
 ├─────────────────────────────────┤
 │  Thread List                      │
@@ -148,17 +148,17 @@ Ordinary chat content is fine to log if relevant to diagnosing a scraping failur
 ├─────────────────────────────────┤
 │ [Chats] [Updates] [Loader] [ ]    │  ← main 4-tab bar
 ├─────────────────────────────────┤
-│  ( C )( G )( AI )( GH )[+][ ⋮ ]   │  ← tab strip, true bottom-most
+│  ( C )( G )( AI )( GH )[+][ ⋮ ]   │  ← tab strip: 3-dot menu (Settings/Add New/All Threads)
 └─────────────────────────────────┘
 ```
 
-**Top app bar:** right-corner 3-dot menu → Settings, Add New (Section 7), All Threads (unfiltered list).
+**Top app bar:** clean title view ("Vaa").
 
 **Pill filter row:** filters thread list by type — All / Chat / Page / Local.
 
 **Thread List:** tap to open/refocus. Long-press → "Open in new tab" (adds to tab strip without leaving current view). **This long-press behavior applies across all top-level tabs, not just Chats** — once Updates/Loader/4th tab have real content, long-pressing an item there follows the same pattern.
 
-**Tab Strip:** the true bottom-most bar on screen — sits below the main 4-tab bar, not above it — and is **global across all four top-level tabs**, not scoped to Chats alone. *[CLAUDE/CHAIRMAN ONLY: confirmed built this way as of Phase 3 — this is a build-history note, not a spec instruction; do not include in fragments.]* Round icons, horizontally scrollable, `+` and `⋮` fixed at the end, non-scrolling. `⋮` menu is **contextual to active tab type**: Forward/Back/Close for page-type tabs, reduced set (Close, module info) for chat/local-type tabs.
+**Tab Strip:** the true bottom-most bar on screen — sits below the main 4-tab bar, not above it — and is **global across all four top-level tabs**, not scoped to Chats alone. Round icons, horizontally scrollable, `+` and `⋮` fixed at the end, non-scrolling. `⋮` menu contains global/contextual menu items: Settings, Add New, All Threads.
 
 **Back navigation:** inside an open chat/local thread → returns to thread list. Inside an open page tab → real page navigation history.
 
@@ -495,7 +495,7 @@ First-launch-only Welcome screen (Section 2) with one-time flag. Bare 4-tab shel
 Central logging utility wired app-wide (Section 4): `catch (e: Throwable)` pattern, local persistent log store, in-app viewer, copy/export. Sensitive-field exclusion built in from the start. Log Keeper shortcut FAB (left corner) wired, Settings toggle added.
 
 **Phase 3 — Thread List + Tab Strip Skeleton**
-Chats tab: top app bar (3-dot menu), pill filter row, thread list UI, bottom tab strip with round icons + fixed `+`/`⋮` — proven with placeholder/dummy entries. Alive/sleep cap logic (Section 8) built and tested. Long-press → "Open in new tab" wired. **Outstanding fix identified post-build:** the tab strip currently disappears when navigating into an open thread's detail view, because that view is a separate nav-graph destination outside the `Scaffold` hosting the strip — true browser-tab behavior requires the strip to persist for the entire time a tab is open, not just on the thread list. Fix by rendering thread/detail content inside the same `Scaffold` (e.g. as another page in the existing pager/nav structure) rather than as an escaping top-level destination.
+Chats tab: top app bar (clean title), pill filter row, thread list UI, bottom tab strip with round icons + fixed `+`/`⋮` (hosting Settings, Add New, All Threads options) — proven with placeholder/dummy entries. Alive/sleep cap logic (Section 8) built and tested. Long-press → "Open in new tab" wired. **Outstanding fix identified post-build:** the tab strip currently disappears when navigating into an open thread's detail view, because that view is a separate nav-graph destination outside the `Scaffold` hosting the strip — true browser-tab behavior requires the strip to persist for the entire time a tab is open, not just on the thread list. Fix by rendering thread/detail content inside the same `Scaffold` (e.g. as another page in the existing pager/nav structure) rather than as an escaping top-level destination.
 
 **Phase 4 — Cache/Cookie Behavior**
 Cache-clear-on-exit (Section 9), Settings screen with the toggle. Verified against the dummy thread's WebView.

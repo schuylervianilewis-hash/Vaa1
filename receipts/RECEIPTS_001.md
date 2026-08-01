@@ -46,3 +46,15 @@
 - How it was verified: Code review and layout structure analysis.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: None.
+
+### Receipt Entry
+- Timestamp: 2026-08-02T02:13:00+05:30
+- One-line summary of what was requested: Consolidate top 3-dot overflow menu into bottom round-icon tab strip 3-dot menu.
+- Exact files touched: app/src/main/java/com/example/MainActivity.kt, BLUEPRINT.md, receipts/RECEIPTS_001.md
+- What was actually done:
+  1. Removed 3-dot menu from top `TopAppBar` in `MainActivity.kt`.
+  2. Moved `DropdownMenu` anchoring (`Settings`, `Add New`, `All Threads`) to the 3-dot icon button (`⋮`) on the bottom round-icon tab strip.
+  3. Updated `BLUEPRINT.md` and appended this receipt entry.
+- How it was verified: Code review and layout verification.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: None.

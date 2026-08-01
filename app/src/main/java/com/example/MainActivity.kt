@@ -153,38 +153,7 @@ fun MainShell(
     modifier = Modifier.fillMaxSize(),
     topBar = {
       TopAppBar(
-        title = { Text("Vaa") },
-        actions = {
-          IconButton(onClick = { showMenu = true }) {
-            Icon(Icons.Default.MoreVert, contentDescription = "Menu Options")
-          }
-          DropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false }
-          ) {
-            DropdownMenuItem(
-              text = { Text("Settings") },
-              onClick = {
-                showMenu = false
-                onOpenSettings()
-              }
-            )
-            DropdownMenuItem(
-              text = { Text("Add New") },
-              onClick = {
-                showMenu = false
-                LogKeeper.log(context, "UI_ACTION", "Add New tapped")
-              }
-            )
-            DropdownMenuItem(
-              text = { Text("All Threads") },
-              onClick = {
-                showMenu = false
-                LogKeeper.log(context, "UI_ACTION", "All Threads tapped")
-              }
-            )
-          }
-        }
+        title = { Text("Vaa") }
       )
     },
     bottomBar = {
@@ -209,7 +178,7 @@ fun MainShell(
             )
           }
         }
-        // True bottom-most tab strip for open threads (positioned cleanly above Android system nav bar)
+        // True bottom-most tab strip for open threads
         Row(
           modifier = Modifier
             .fillMaxWidth()
@@ -221,7 +190,38 @@ fun MainShell(
           Spacer(modifier = Modifier.width(8.dp))
           Icon(Icons.Default.Add, contentDescription = "Add")
           Spacer(modifier = Modifier.weight(1f))
-          Icon(Icons.Default.MoreVert, contentDescription = "More")
+          
+          Box {
+            IconButton(onClick = { showMenu = true }) {
+              Icon(Icons.Default.MoreVert, contentDescription = "More Options")
+            }
+            DropdownMenu(
+              expanded = showMenu,
+              onDismissRequest = { showMenu = false }
+            ) {
+              DropdownMenuItem(
+                text = { Text("Settings") },
+                onClick = {
+                  showMenu = false
+                  onOpenSettings()
+                }
+              )
+              DropdownMenuItem(
+                text = { Text("Add New") },
+                onClick = {
+                  showMenu = false
+                  LogKeeper.log(context, "UI_ACTION", "Add New tapped")
+                }
+              )
+              DropdownMenuItem(
+                text = { Text("All Threads") },
+                onClick = {
+                  showMenu = false
+                  LogKeeper.log(context, "UI_ACTION", "All Threads tapped")
+                }
+              )
+            }
+          }
         }
       }
     }
