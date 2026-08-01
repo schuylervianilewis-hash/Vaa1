@@ -37,3 +37,12 @@
 - How it was verified: Code review.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: Ensure GitHub Actions workflows are enabled on the forked repository.
+
+### Receipt Entry
+- Timestamp: 2026-08-02T01:21:00+05:30
+- One-line summary of what was requested: Elevate thread tab strip above Android system navigation bar.
+- Exact files touched: app/src/main/java/com/example/MainActivity.kt
+- What was actually done: Applied `.navigationBarsPadding()` to the bottomBar container Column and overridden `NavigationBar`'s default windowInsets (`WindowInsets(0,0,0,0)`) so the thread tab strip sits cleanly above the system 3-button navigation bar.
+- How it was verified: Code review and layout structure analysis.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: None.
