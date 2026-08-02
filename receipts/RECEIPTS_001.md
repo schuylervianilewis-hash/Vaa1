@@ -97,3 +97,18 @@
 - How it was verified: Code review.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: Ready for Phase 5 (Add New Flow, Online/Website Path).
+
+### Receipt Entry
+- Timestamp: 2026-08-03T01:35:00+05:30
+- One-line summary of what was requested: Implement Phase 5 - Add New Flow, Online/Website Path.
+- Exact files touched: app/src/main/java/com/example/model/ModuleConfig.kt, app/src/main/java/com/example/repository/ModuleRepository.kt, app/src/main/java/com/example/ui/screens/AddNewScreen.kt, app/src/main/java/com/example/ui/screens/AddWebsiteModuleScreen.kt, app/src/main/java/com/example/MainActivity.kt, BLUEPRINT.md, receipts/RECEIPTS_001.md
+- What was actually done:
+  1. Created `ModuleConfig` data model and `ModuleRepository` JSON file persistence store in `context.filesDir/modules/`.
+  2. Implemented `AddNewScreen` listing Online AI module setup choices and built-in Page threads.
+  3. Implemented `AddWebsiteModuleScreen` 3-step setup wizard (URL input, bounded WebView login with `saveFormData=false`, CSS element selector input, and JSON module saving).
+  4. Surfaced explicit Google OAuth restriction notice for sites relying solely on Google Sign-In.
+  5. Updated `MainActivity.kt` with navigation routes (`add_new`, `add_website_module`) and bottom menu wiring.
+  6. Updated `BLUEPRINT.md` marking Phase 5 complete and set status for Phase 6.
+- How it was verified: Code review.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: Ready for Phase 6 (First Chat Module Working End-to-End).

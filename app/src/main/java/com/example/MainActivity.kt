@@ -32,6 +32,8 @@ import com.example.manager.CacheManager
 import com.example.manager.TabLifecycleManager
 import com.example.model.ThreadCategory
 import com.example.model.ThreadItem
+import com.example.ui.screens.AddNewScreen
+import com.example.ui.screens.AddWebsiteModuleScreen
 import com.example.ui.screens.ChatsTabContent
 import com.example.ui.screens.LogViewerScreen
 import com.example.ui.screens.SettingsScreen
@@ -89,7 +91,8 @@ fun AppNavigation() {
     composable("main") {
       MainShell(
         onOpenSettings = { navController.navigate("settings") },
-        onOpenLogs = { navController.navigate("logs") }
+        onOpenLogs = { navController.navigate("logs") },
+        onOpenAddNew = { navController.navigate("add_new") }
       )
     }
     composable("settings") {
@@ -101,6 +104,21 @@ fun AppNavigation() {
     composable("logs") {
       LogViewerScreen(
         onBack = { navController.popBackStack() }
+      )
+    }
+    composable("add_new") {
+      AddNewScreen(
+        onBack = { navController.popBackStack() },
+        onAddViaWebsite = { navController.navigate("add_website_module") },
+        onAddViaApiKey = { Toast.makeText(context, "Add via API Key coming in Phase 9", Toast.LENGTH_SHORT).show() }
+      )
+    }
+    composable("add_website_module") {
+      AddWebsiteModuleScreen(
+        onBack = { navController.popBackStack() },
+        onModuleSaved = {
+          navController.popBackStack("main", false)
+        }
       )
     }
   }
@@ -140,7 +158,8 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
 @Composable
 fun MainShell(
   onOpenSettings: () -> Unit,
-  onOpenLogs: () -> Unit
+  onOpenLogs: () -> Unit,
+  onOpenAddNew: () -> Unit
 ) {
   val context = LocalContext.current
   val prefs = remember { context.getSharedPreferences("vaa_prefs", Context.MODE_PRIVATE) }
@@ -249,7 +268,7 @@ fun MainShell(
           }
 
           IconButton(onClick = {
-            Toast.makeText(context, "Add new thread tab", Toast.LENGTH_SHORT).show()
+            onOpenAddNew()
           }) {
             Icon(Icons.Default.Add, contentDescription = "Add Tab")
           }
@@ -274,6 +293,7 @@ fun MainShell(
                 onClick = {
                   showMenu = false
                   LogKeeper.log(context, "UI_ACTION", "Add New tapped")
+                  onOpenAddNew()
                 }
               )
               DropdownMenuItem(
@@ -335,7 +355,7 @@ fun MainShell(
             Icon(Icons.Default.Face, contentDescription = "Omega")
           }
           // Contextual action - below Omega
-          FloatingActionButton(onClick = { LogKeeper.log(context, "UI_ACTION", "Contextual FAB tapped") }) {
+          FloatingActionButton(onClick = { onOpenAddNew() }) {
             Icon(Icons.Default.Add, contentDescription = "Action")
           }
         }
