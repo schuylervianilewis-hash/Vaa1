@@ -157,7 +157,7 @@ fun MainShell(
   var showMenu by remember { mutableStateOf(false) }
 
   val tabs = listOf("Chats", "Updates", "Loader", "Tools")
-  val icons = listOf(Icons.Default.Chat, Icons.Default.RssFeed, Icons.Default.CloudDownload, Icons.Default.Build)
+  val icons = listOf(Icons.Default.Chat, Icons.Default.Notifications, Icons.Default.Refresh, Icons.Default.Build)
   
   Scaffold(
     modifier = Modifier.fillMaxSize(),
@@ -214,10 +214,10 @@ fun MainShell(
             } else {
               TabLifecycleManager.openTabs.forEach { tab ->
                 val icon = when (tab.category) {
-                  ThreadCategory.CHAT -> Icons.Default.ChatBubble
-                  ThreadCategory.PAGE -> Icons.Default.Language
-                  ThreadCategory.LOCAL -> Icons.Default.Memory
-                  ThreadCategory.ALL -> Icons.Default.Chat
+                  ThreadCategory.CHAT -> Icons.Default.Chat
+                  ThreadCategory.PAGE -> Icons.Default.Info
+                  ThreadCategory.LOCAL -> Icons.Default.Face
+                  ThreadCategory.ALL -> Icons.Default.List
                 }
                 
                 Surface(

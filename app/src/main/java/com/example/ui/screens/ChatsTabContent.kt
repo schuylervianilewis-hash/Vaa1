@@ -54,7 +54,7 @@ fun ChatsTabContent(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            ThreadCategory.entries.forEach { category ->
+            ThreadCategory.values().forEach { category ->
                 FilterChip(
                     selected = selectedCategory == category,
                     onClick = { selectedCategory = category },
@@ -63,7 +63,7 @@ fun ChatsTabContent(
             }
         }
 
-        HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+        Divider(modifier = Modifier.padding(horizontal = 16.dp))
 
         // Thread List
         LazyColumn(
@@ -97,10 +97,10 @@ fun ThreadListItem(
     onLongClick: () -> Unit
 ) {
     val icon = when (thread.category) {
-        ThreadCategory.CHAT -> Icons.Default.ChatBubbleOutline
-        ThreadCategory.PAGE -> Icons.Default.Web
-        ThreadCategory.LOCAL -> Icons.Default.Memory
-        ThreadCategory.ALL -> Icons.Default.Chat
+        ThreadCategory.CHAT -> Icons.Default.Chat
+        ThreadCategory.PAGE -> Icons.Default.Info
+        ThreadCategory.LOCAL -> Icons.Default.Face
+        ThreadCategory.ALL -> Icons.Default.List
     }
 
     val isOpen = TabLifecycleManager.openTabs.any { it.id == thread.id }
