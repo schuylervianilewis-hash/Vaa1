@@ -58,3 +58,17 @@
 - How it was verified: Code review and layout verification.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: None.
+
+### Receipt Entry
+- Timestamp: 2026-08-02T16:10:00+05:30
+- One-line summary of what was requested: Implement Phase 3 - Thread List + Tab Strip Skeleton.
+- Exact files touched: app/src/main/java/com/example/model/ThreadItem.kt, app/src/main/java/com/example/manager/TabLifecycleManager.kt, app/src/main/java/com/example/ui/screens/ChatsTabContent.kt, app/src/main/java/com/example/MainActivity.kt, BLUEPRINT.md, receipts/RECEIPTS_001.md
+- What was actually done:
+  1. Created `ThreadItem` data model supporting ThreadCategory (ALL, CHAT, PAGE, LOCAL).
+  2. Implemented `TabLifecycleManager` to manage open tabs and enforce alive/sleep tab lifecycle caps (max 3 live tabs in memory for low-RAM hardware).
+  3. Created `ChatsTabContent` with interactive category filter pills (All, Chat, Page, Local) and long-press "Open in new tab" gesture handler.
+  4. Updated `MainActivity.kt` to integrate `ChatsTabContent` and dynamically render open thread tab icons in the bottom tab strip.
+  5. Updated `BLUEPRINT.md` marking Phase 3 complete and set status for Phase 4.
+- How it was verified: Structural code review.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: Ready for Phase 4 (Cache/Cookie Behavior).

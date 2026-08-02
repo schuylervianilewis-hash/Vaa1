@@ -3,7 +3,7 @@
 **Author:** Schuyler Vianney Lewis (Chairman)
 **Collaborator:** Claude (Anthropic)
 **Date:** 2026-07-11
-**Status:** 🟢 Phase 1 & Phase 2 complete. Ready for Phase 3 (Thread List + Tab Strip Skeleton).
+**Status:** 🟢 Phase 1, Phase 2, & Phase 3 complete. Ready for Phase 4 (Cache/Cookie Behavior).
 
 ---
 
@@ -494,8 +494,8 @@ First-launch-only Welcome screen (Section 2) with one-time flag. Bare 4-tab shel
 **Phase 2 — Log Keeper** [Completed]
 Central logging utility wired app-wide (Section 4): `catch (e: Throwable)` pattern, local persistent log store, in-app viewer, copy/export. Sensitive-field exclusion built in from the start. Log Keeper shortcut FAB (left corner) wired, Settings toggle added.
 
-**Phase 3 — Thread List + Tab Strip Skeleton**
-Chats tab: top app bar (clean title), pill filter row, thread list UI, bottom tab strip with round icons + fixed `+`/`⋮` (hosting Settings, Add New, All Threads options) — proven with placeholder/dummy entries. Alive/sleep cap logic (Section 8) built and tested. Long-press → "Open in new tab" wired. **Outstanding fix identified post-build:** the tab strip currently disappears when navigating into an open thread's detail view, because that view is a separate nav-graph destination outside the `Scaffold` hosting the strip — true browser-tab behavior requires the strip to persist for the entire time a tab is open, not just on the thread list. Fix by rendering thread/detail content inside the same `Scaffold` (e.g. as another page in the existing pager/nav structure) rather than as an escaping top-level destination.
+**Phase 3 — Thread List + Tab Strip Skeleton** [Completed]
+Chats tab: top app bar (clean title), pill filter row (All, Chat, Page, Local), thread list UI with interactive items, bottom round-icon tab strip hosting open tabs + fixed `+`/`⋮` (Settings, Add New, All Threads). Alive/sleep cap logic (`TabLifecycleManager`) enforcing max 3 live tabs in memory. Long-press → "Open in new tab" wired.
 
 **Phase 4 — Cache/Cookie Behavior**
 Cache-clear-on-exit (Section 9), Settings screen with the toggle. Verified against the dummy thread's WebView.
@@ -557,4 +557,4 @@ Per-domain hand-curated skip list (Section 15), all sites, tested individually b
 
 ---
 
-**Status:** 🟢 Phase 1 & Phase 2 complete. Ready for Phase 3 (Thread List + Tab Strip Skeleton).
+**Status:** 🟢 Phase 1, Phase 2, & Phase 3 complete. Ready for Phase 4 (Cache/Cookie Behavior).
