@@ -28,6 +28,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.logging.LogKeeper
+import com.example.manager.CacheManager
 import com.example.manager.TabLifecycleManager
 import com.example.model.ThreadCategory
 import com.example.model.ThreadItem
@@ -56,6 +57,11 @@ class MainActivity : ComponentActivity() {
         AppNavigation()
       }
     }
+  }
+
+  override fun onDestroy() {
+    CacheManager.performCacheCleanupIfEnabled(applicationContext)
+    super.onDestroy()
   }
 }
 

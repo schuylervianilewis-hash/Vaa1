@@ -3,7 +3,7 @@
 **Author:** Schuyler Vianney Lewis (Chairman)
 **Collaborator:** Claude (Anthropic)
 **Date:** 2026-07-11
-**Status:** 🟢 Phase 1, Phase 2, & Phase 3 complete. Ready for Phase 4 (Cache/Cookie Behavior).
+**Status:** 🟢 Phase 1, Phase 2, Phase 3, & Phase 4 complete. Ready for Phase 5 (Add New Flow, Online/Website Path).
 
 ---
 
@@ -497,8 +497,8 @@ Central logging utility wired app-wide (Section 4): `catch (e: Throwable)` patte
 **Phase 3 — Thread List + Tab Strip Skeleton** [Completed]
 Chats tab: top app bar (clean title), pill filter row (All, Chat, Page, Local), thread list UI with interactive items, bottom round-icon tab strip hosting open tabs + fixed `+`/`⋮` (Settings, Add New, All Threads). Alive/sleep cap logic (`TabLifecycleManager`) enforcing max 3 live tabs in memory. Long-press → "Open in new tab" wired.
 
-**Phase 4 — Cache/Cookie Behavior**
-Cache-clear-on-exit (Section 9), Settings screen with the toggle. Verified against the dummy thread's WebView.
+**Phase 4 — Cache/Cookie Behavior** [Completed]
+Cache-clear-on-exit (Section 9), Settings screen toggle (`clear_cache_on_exit`), `CacheManager` with `WebStorage.getInstance().deleteAllData()` on app exit while session cookies remain preserved.
 
 **Phase 5 — Add New Flow, Online/Website Path**
 Full Add New → Online → Add via Website → URL → login → element picker → save flow (Section 7), tested against Claude. Domain-lock check (Section 12.2) built here. Multi-account isolation built and tested here — a second Claude thread under a different account must not disturb the first thread's session. **Google-only login handling built here too** — detect/document that a site whose only login method is "Sign in with Google" cannot be added as a Type A module (Section 12.10), and surface that clearly to the Chairman during Add New rather than silently failing or attempting a workaround that doesn't actually work. **WebView's native autofill/save-password prompts disabled on the login WebView instance** (Section 12.11), confirmed the "Save password?" prompt never appears during the Claude login test.
@@ -557,4 +557,4 @@ Per-domain hand-curated skip list (Section 15), all sites, tested individually b
 
 ---
 
-**Status:** 🟢 Phase 1, Phase 2, & Phase 3 complete. Ready for Phase 4 (Cache/Cookie Behavior).
+**Status:** 🟢 Phase 1, Phase 2, Phase 3, & Phase 4 complete. Ready for Phase 5 (Add New Flow, Online/Website Path).

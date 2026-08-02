@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.manager.CacheManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +24,9 @@ fun SettingsScreen(
     val prefs = remember { context.getSharedPreferences("vaa_prefs", Context.MODE_PRIVATE) }
     var showLogFab by remember {
         mutableStateOf(prefs.getBoolean("log_keeper_fab_enabled", true))
+    }
+    var clearCacheOnExit by remember {
+        mutableStateOf(CacheManager.isClearCacheOnExitEnabled(context))
     }
 
     Scaffold(
@@ -44,6 +48,7 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Log Keeper FAB shortcut setting
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,7 +73,34 @@ fun SettingsScreen(
                 )
             }
 
-            HorizontalDivider()
+            Divider()
+
+            // Cache Clear setting
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Clear Page Cache on Exit", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        "Clears WebStorage data on exit. Login session cookies are always retained.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(
+                    checked = clearCacheOnExit,
+                    onCheckedChange = { isChecked ->
+                        clearCacheOnExit = isChecked
+                        CacheManager.setClearCacheOnExitEnabled(context, isChecked)
+                    }
+                )
+            }
+
+            Divider()
 
             Row(
                 modifier = Modifier

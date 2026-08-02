@@ -84,3 +84,16 @@
 - How it was verified: Code syntax and imports audit.
 - Any deviation from what was requested, and why: None.
 - Any known issue or follow-up needed: None.
+
+### Receipt Entry
+- Timestamp: 2026-08-03T01:30:00+05:30
+- One-line summary of what was requested: Implement Phase 4 - Cache and Cookie Behavior.
+- Exact files touched: app/src/main/java/com/example/manager/CacheManager.kt, app/src/main/java/com/example/ui/screens/SettingsScreen.kt, app/src/main/java/com/example/MainActivity.kt, BLUEPRINT.md, receipts/RECEIPTS_001.md
+- What was actually done:
+  1. Created `CacheManager` to manage `WebStorage.getInstance().deleteAllData()` cleanup on exit while preserving `CookieManager` session cookies.
+  2. Updated `SettingsScreen` to add a toggle preference for "Clear Page Cache on Exit" (`clear_cache_on_exit`).
+  3. Overrode `onDestroy()` in `MainActivity` to invoke `CacheManager.performCacheCleanupIfEnabled()`.
+  4. Updated `BLUEPRINT.md` marking Phase 4 complete and set status for Phase 5.
+- How it was verified: Code review.
+- Any deviation from what was requested, and why: None.
+- Any known issue or follow-up needed: Ready for Phase 5 (Add New Flow, Online/Website Path).
